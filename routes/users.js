@@ -5,21 +5,55 @@ const db = require("../db/db")
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  const id = req.query.id
 
-  let dataArray = [
+  if(id != null)  {
+    db.getAdminById(id, function(error, user) {
+      if(error) 
+        res.status(500).json({ error })
+      else if (!user)
+        res.status(500).json({ error })
+      else
+        res.status(200).json({ user })
+    })
+  } else  {
+    db.getAllAdmins(function(error, users)  {
+      if(error) 
+        res.status(500).json({ error })
+      else if (!users)
+        res.status(500).json({ error })
+      else
+        res.status(200).json({ users })
+    })
+  }
+})
 
-    {name: "khaleel", age: 23},
-    {name: "elias", age: 23},
-    {name: "fahed", age: 12},
-    {name: "robin", age: 45}
-  ];
-
-  res.json({
-
-    data:dataArray
-  })
+router.post('/create', function(req, res, next) {
+  const username = req.body.username
+  const status = req.body.status
+  
+  db.createAdmin(username, status, function(error) {
+    if(error) {
+      console.log(error);
+      res.status(500).json({ error })
+    } else
+      res.status(200).json({ message: "Created successfully! "})
+  })  
 });
 
+router.get('/updateStatus', function(req, res, next)  {
+  const id = req.query.id
+  const status = req.query.status
 
+  if(id != null)  {
+    db.updateStatus(id, status, function(error) {
+      if(error) 
+        res.status(500).json({ error })
+      else
+        res.status(200).json({ })
+    })
+  } else
+    res.status(200).json({ error: "Wrong ID" })
+})
 
 module.exports = router;

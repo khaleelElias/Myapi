@@ -7,8 +7,8 @@ const cors = require('cors');
 
 const db = require("./db/db")
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./routes/index.js');
+var usersRouter = require('./routes/users.js');
 
 var app = express();
 
@@ -39,10 +39,11 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(err.status || 500).send('error');
 });
 
-//app.listen("3001")
+app.listen(3001, function() {
+  console.log("Up and running on port 3002")
+})
 
 module.exports = app;
