@@ -34,18 +34,17 @@ router.post('/create', function(req, res, next) {
   
   db.createAdmin(username, status, function(error) {
     if(error) {
-      console.log(error);
       res.status(500).json({ error })
     } else
       res.status(200).json({ message: "Created successfully! "})
   })  
 });
 
-router.get('/updateStatus', function(req, res, next)  {
-  const id = req.query.id
-  const status = req.query.status
+router.put('/updateStatus', function(req, res, next)  {
+  const id = req.body.id
+  const status = req.body.status
 
-  if(id != null)  {
+  if(id != null || id == " ")  {
     db.updateStatus(id, status, function(error) {
       if(error) 
         res.status(500).json({ error })
@@ -53,7 +52,7 @@ router.get('/updateStatus', function(req, res, next)  {
         res.status(200).json({ })
     })
   } else
-    res.status(200).json({ error: "Wrong ID" })
+    res.status(100).json({ error: "Wrong ID" })
 })
 
 module.exports = router;

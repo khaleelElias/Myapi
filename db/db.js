@@ -45,16 +45,17 @@ exports.updateStatus = function(id, status, callback)   {
     const values = [status, id]
 
     db.run(query, values, function(error)   {
+        console.log(error)
         callback(error)
     })
 }
 /*-------------------- Column -------------------------*/
 db.run(`
-    CREATE TABLE IF NOT EXISTS column(
+    CREATE TABLE IF NOT EXISTS column   (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title VARCHAR(255) NOT NULL,
         message VARCHAR(1000) NOT NULL,
-        supervisor  INTEGER NOT NULL,
+        supervisor INTEGER NOT NULL,
         FOREIGN KEY (supervisor) REFERENCES admin(id)
     )
 `)
