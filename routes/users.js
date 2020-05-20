@@ -41,10 +41,13 @@ router.post('/create', function(req, res, next) {
   })  
 });
 
-router.get('/updateStatus', function(req, res, next)  {
-  const id = req.query.id
-  const status = req.query.status
+router.put('/updateStatus', function(req, res)  {
+  console.log(req)
+  const id = req.body.id
+  const status = req.body.status
 
+  console.log("PUT /updateStatus with: ", id, status)
+  
   if(id != null)  {
     db.updateStatus(id, status, function(error) {
       if(error) 
