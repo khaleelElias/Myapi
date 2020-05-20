@@ -34,7 +34,6 @@ router.post('/create', function(req, res, next) {
   
   db.createAdmin(username, status, function(error) {
     if(error) {
-      console.log(error);
       res.status(500).json({ error })
     } else
       res.status(200).json({ message: "Created successfully! "})
@@ -56,7 +55,7 @@ router.put('/updateStatus', function(req, res)  {
         res.status(200).json({ })
     })
   } else
-    res.status(200).json({ error: "Wrong ID" })
+    res.status(100).json({ error: "Wrong ID" })
 })
 
 module.exports = router;
