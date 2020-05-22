@@ -54,8 +54,8 @@ router.delete('/', function(req, res, next)  {
 router.put('/status', function(req, res, next)  {
   const id = req.body.id
   const status = req.body.status
-
-  if(id != null || id == " ")  {
+    
+  if(id != null)  {
     db.updateStatus(id, status, function(error) {
       if(error) 
         res.status(500).json({ error })
