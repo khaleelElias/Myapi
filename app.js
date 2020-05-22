@@ -50,13 +50,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 501).send('error');
 });
 
-<<<<<<< HEAD
 app.listen(3001, function() {
   console.log("Up and running on port 3001")
-=======
-app.listen(3002, function() {
-  console.log("Up and running on port 3002")
->>>>>>> 3030f5822e7cf5b02c46eab87971b2c8ea7a6202
 })
 
 module.exports = app;

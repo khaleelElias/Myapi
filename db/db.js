@@ -111,7 +111,9 @@ db.run(`
 		title TEXT NOT NULL,
         company TEXT NOT NULL,
         date DATE NOT NULL,
-        status ENUM [bad, normal, good] NOT NULL
+        status ENUM [bad, normal, good] NOT NULL,
+        columnId INTEGER NOT NULL,
+        FOREIGN KEY (columnId) REFERENCES column(id)
     )
 `)
 

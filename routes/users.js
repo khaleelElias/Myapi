@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
   }
 })
 
-router.post('/create', function(req, res, next) {
+router.post('/', function(req, res, next) {
   const username = req.body.username
   const status = req.body.status
   
@@ -40,13 +40,11 @@ router.post('/create', function(req, res, next) {
   })  
 });
 
-router.put('/updateStatus', function(req, res)  {
+router.put('/status', function(req, res)  {
   console.log(req)
   const id = req.body.id
   const status = req.body.status
-
-  console.log("PUT /updateStatus with: ", id, status)
-  
+    
   if(id != null)  {
     db.updateStatus(id, status, function(error) {
       if(error) 
