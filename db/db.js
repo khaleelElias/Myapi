@@ -56,6 +56,7 @@ db.run(`
         title VARCHAR(255) NOT NULL,
         message VARCHAR(1000) NOT NULL,
         supervisor INTEGER NOT NULL,
+        typ INTEGER NOT NULL,
         FOREIGN KEY (supervisor) REFERENCES admin(id)
     )
 `)
