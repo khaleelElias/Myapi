@@ -6,7 +6,7 @@ const db = new sqlite3.Database('./db.db')
 db.run(`
     CREATE TABLE IF NOT EXISTS admin    (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username VARCHAR(20) NOT NULL UNIQUE,
+        username VARCHAR(20) NOT NULL,
         status ENUM [bad, normal, good] NOT NULL
     )
 `)
