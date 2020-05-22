@@ -14,7 +14,7 @@ router.get('/', function(req, res, next)  {
   })
 })
 
-router.post("/create", function(req, res, next)  {
+router.post("/", function(req, res, next)  {
   const title = req.body.title
   const message = req.body.message
   const supervisor = req.body.supervisor

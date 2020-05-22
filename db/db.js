@@ -40,6 +40,13 @@ exports.getAdminById = function(id, callback) {
         callback(error, admin)
     })
 }
+exports.deleteUserById = function(id, callback) {
+    const query = "DELETE FROM admin WHERE id = ?"
+
+    db.run(query, [id], function(error) {
+        callback(error)
+    })
+}
 exports.updateStatus = function(id, status, callback)   {
     const query = "UPDATE admin SET status = ? WHERE id = ?"
     const values = [status, id]
