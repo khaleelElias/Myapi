@@ -6,7 +6,7 @@ const db = new sqlite3.Database('./db.db')
 db.run(`
     CREATE TABLE IF NOT EXISTS admin    (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username VARCHAR(20) NOT NULL UNIQUE,
+        username VARCHAR(20) NOT NULL,
         status ENUM [bad, normal, good] NOT NULL
     )
 `)
@@ -38,6 +38,13 @@ exports.getAdminById = function(id, callback) {
 
     db.get(query, [id], function(error, admin) {
         callback(error, admin)
+    })
+}
+exports.deleteUserById = function(id, callback) {
+    const query = "DELETE FROM admin WHERE id = ?"
+
+    db.run(query, [id], function(error) {
+        callback(error)
     })
 }
 exports.updateStatus = function(id, status, callback)   {

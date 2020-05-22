@@ -37,11 +37,21 @@ router.post('/', function(req, res, next) {
       res.status(500).json({ error })
     } else
       res.status(200).json({ message: "Created successfully! "})
-  })  
+  }) 
 });
 
-router.put('/status', function(req, res)  {
-  console.log(req)
+router.delete('/', function(req, res, next)  {
+  const id = req.body.id
+
+  db.deleteUserById(id, function(error) {
+    if(error) 
+      res.status(500).json({ error })
+    else
+      res.status(200).json({ message: "Deleted successfully!" })
+  })
+})
+
+router.put('/status', function(req, res, next)  {
   const id = req.body.id
   const status = req.body.status
     
@@ -55,5 +65,7 @@ router.put('/status', function(req, res)  {
   } else
     res.status(100).json({ error: "Wrong ID" })
 })
+
+
 
 module.exports = router;
