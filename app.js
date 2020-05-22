@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require('body-parser')
-
 const cors = require('cors');
 
 const db = require("./db/db")
@@ -15,7 +14,7 @@ var columnsRouter = require('./routes/columns.js');
 
 var app = express();
 
-app.use(cors({origin: 'http://localhost:3003'}));
+app.use(cors({origin: 'http://localhost:3002'}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -50,8 +49,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 501).send('error');
 });
 
-app.listen(3001, function() {
-  console.log("Up and running on port 3001")
+app.listen(3000, function() {
+  console.log("Up and running on port 3000")
 })
 
 module.exports = app;
