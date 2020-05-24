@@ -11,10 +11,11 @@ const db = require("./db/db")
 var indexRouter = require('./routes/index.js');
 var usersRouter = require('./routes/users.js');
 var columnsRouter = require('./routes/columns.js');
+var ordersRouter = require('./routes/orders.js');
 
 var app = express();
 
-app.use(cors({origin: 'http://localhost:3002'}));
+app.use(cors({origin: 'http://localhost:3001'}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/columns', columnsRouter);
+app.use('/orders', ordersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
