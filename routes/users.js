@@ -36,7 +36,7 @@ router.post('/', function(req, res, next) {
     if(error) {
       res.status(500).json({ error })
     } else
-      res.status(200).json({ message: "Created successfully! "})
+      res.status(200).json({ message: "Created successfully!"})
   }) 
 });
 
@@ -63,7 +63,7 @@ router.put('/status', function(req, res, next)  {
         res.status(200).json({ })
     })
   } else
-    res.status(100).json({ error: "Wrong ID" })
+    res.status(400).json({ error: "NO ID" })
 })
 
 

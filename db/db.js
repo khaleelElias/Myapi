@@ -77,9 +77,9 @@ exports.getAllColumns = function(callback) {
     })
 }
 /* CreateColumn */
-exports.createColumn = function(title, message, supervisor, callback) {
-    const query = "INSERT INTO column (title, message, supervisor) VALUES(?, ?, ?)"
-    const values = [title, message, supervisor]
+exports.createColumn = function(title, message, supervisor, typ, callback) {
+    const query = "INSERT INTO column (title, message, supervisor, typ) VALUES(?, ?, ?, ?)"
+    const values = [title, message, supervisor, typ]
 
     db.run(query, values, function(error) {
         callback(error)
@@ -95,7 +95,7 @@ exports.deleteColumn = function(id, callback) {
     })
 }
 /*getColumnById*/
-exports.getColumnkById = function(id, callback) {
+exports.getColumnById = function(id, callback) {
     const query = "SELECT * FROM column WHERE id = ?"
 
     db.get(query, [id], function(error, column) {
@@ -103,9 +103,9 @@ exports.getColumnkById = function(id, callback) {
     })
 }
 /*updateColumn*/
-exports.updateColumn = function(id, title, message, supervisor, callback) {
-    const query = "UPDATE column SET title = ?, message = ?, supervisor = ? WHERE id = ?"
-    const VALUES = [title, message, supervisor, id]
+exports.updateColumn = function(id, title, message, supervisor, typ, callback) {
+    const query = "UPDATE column SET title = ?, message = ?, supervisor = ?, typ = ? WHERE id = ?"
+    const VALUES = [title, message, supervisor, typ, id]
 
     db.run(query, VALUES, function(error) {
         callback(error)
