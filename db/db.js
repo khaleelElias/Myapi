@@ -132,9 +132,9 @@ exports.getAllOrders = function(callback) {
         callback(error, orders);
     })
 }
-exports.createOrder = function(title, company, date, status, callback) {
-    const query = "INSERT INTO 'order' (title, company, date, status) VALUES (?, ?, ?, ?)"
-    const values = [title, company, date, status]
+exports.createOrder = function(title, company, date, status, columnId, callback) {
+    const query = "INSERT INTO 'order' (title, company, date, status, columnId) VALUES (?, ?, ?, ?, ?)"
+    const values = [title, company, date, status, columnId]
 
     db.run(query, values, function(error) {
         callback(error);
@@ -147,15 +147,23 @@ exports.getOrderById = function(id, callback) {
         callback(error, order)
     })
 }
-exports.updateOrderById = function(id, title, company, date, status, callback) {
-    const query = `UPDATE 'order' SET title = ?, company = ?, date = ?, status = ? where id = ?`
-    const values = [title, company, date, status, id]
+exports.getOrderByColumnId = function(columnId, callback)   {
+    const query = `SELECT * FROM 'order' WHERE columnId = ?`
+    const values = [columnId]
 
-    db.run(query, values, function(error) {
-        callback(error);
+    db.all(query, values, function(error, orders)   {
+        callback(error, orders)
     })
 }
-exports.deleteOrderById = function(id, callback) {
+exports.updateOrder = function(id, title, company, date, status, columnId, callback) {
+    const query = `UPDATE 'order' SET title = ?, company = ?, date = ?, status = ?, columnId = ? WHERE id = ?`
+    const values = [title, company, date, status, columnId, id]
+
+    db.run(query, values, function(error) {
+        callback(error)
+    })
+}
+exports.deleteOrder = function(id, callback) {
     const query = `DELETE FROM 'order' WHERE id = ?`
 
     db.run(query, [id], function(error) {
@@ -174,19 +182,19 @@ db.run(`
     )
 `)
 
-exports.getAllCheck = function(callback) {
+exports.createCheck = function(title, status, columnId, callback) {
+    const query = "INSERT INTO 'check' (title, status, columnId) VALUES (?, ?, ?)"
+    const values = [title, status, columnId]
+
+    db.run(query, values, function(error) {
+        callback(error);
+    })
+}
+exports.getAllChecks = function(callback) {
     const query = "SELECT * FROM 'check' ORDER BY id DESC"
 
     db.all(query, function(error, checks) {
         callback(error, checks);
-    })
-}
-exports.createCheck = function(title, status, callback) {
-    const query = "INSERT INTO 'check' (title, status) VALUES (?, ?)"
-    const values = [title, status]
-
-    db.run(query, values, function(error) {
-        callback(error);
     })
 }
 exports.getCheckById = function(id, callback) {
@@ -203,15 +211,15 @@ exports.getChecksByColumnId = function(columnId, callback) {
         callback(error, post)
     })
 }
-exports.updateCheckById = function(id, title, status, callback) {
-    const query = `UPDATE 'check' SET title = ?, status = ? WHERE id = ?`
-    const values = [title, status, id]
+exports.updateCheckById = function(id, title, status, columnId, callback) {
+    const query = `UPDATE 'check' SET title = ?, status = ?, columnId = ? WHERE id = ?`
+    const values = [title, status, columnId, id]
 
     db.run(query, values, function(error) {
         callback(error);
     })
 }
-exports.deleteCheckById = function(id, callback) {
+exports.deleteCheck = function(id, callback) {
     const query = `DELETE FROM 'check' WHERE id = ?`
 
     db.run(query, [id], function(error) {
