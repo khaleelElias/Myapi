@@ -27,7 +27,7 @@ exports.getAllAdmins = function(callback) {
     })
 }
 exports.getAdminByUsername = function(username, callback) {
-    const query = "SELECT * FROM admin WHERE username = ?"
+    const query = "SELECT FROM admin WHERE username = ?"
 
     db.get(query, [username], function(error, admin) {
         callback(error, admin)
@@ -63,7 +63,7 @@ db.run(`
         title VARCHAR(255) NOT NULL,
         message VARCHAR(1000) NOT NULL,
         supervisor INTEGER NOT NULL,
-        typ INTEGER NOT NULL,
+        type INTEGER NOT NULL,
         FOREIGN KEY (supervisor) REFERENCES admin(id)
     )
 `)
@@ -77,9 +77,9 @@ exports.getAllColumns = function(callback) {
     })
 }
 /* CreateColumn */
-exports.createColumn = function(title, message, supervisor, typ, callback) {
-    const query = "INSERT INTO column (title, message, supervisor, typ) VALUES(?, ?, ?, ?)"
-    const values = [title, message, supervisor, typ]
+exports.createColumn = function(title, message, supervisor, type, callback) {
+    const query = "INSERT INTO column (title, message, supervisor, type) VALUES(?, ?, ?, ?)"
+    const values = [title, message, supervisor, type]
 
     db.run(query, values, function(error) {
         callback(error)
@@ -103,9 +103,9 @@ exports.getColumnById = function(id, callback) {
     })
 }
 /*updateColumn*/
-exports.updateColumn = function(id, title, message, supervisor, typ, callback) {
-    const query = "UPDATE column SET title = ?, message = ?, supervisor = ?, typ = ? WHERE id = ?"
-    const VALUES = [title, message, supervisor, typ, id]
+exports.updateColumn = function(id, title, message, supervisor, type, callback) {
+    const query = "UPDATE column SET title = ?, message = ?, supervisor = ?, type = ? WHERE id = ?"
+    const VALUES = [title, message, supervisor, type, id]
 
     db.run(query, VALUES, function(error) {
         callback(error)
