@@ -4,17 +4,19 @@ var router = express.Router();
 const db = require("../db/db")
 
 router.get("/", function(req, res, next) {
-    const id = req.query.ids
-    const columnId = req.query.columnId
-
-    if(id != null || id != "")  {
+    const id = req.query.ids || null
+    const columnId = req.query.columnId || null
+    console.log("id: ", id)
+    if(id != null && id != "")  {
+        console.log("id")
         db.getOrderById(id, function(error, order)  {
             if(error)  
                 res.status(500).json({ error })
             else
                 res.status(200).json({ order })
         })
-    }   else if(columnId != null || columnId != "" )    {
+    }   else if(columnId != null && columnId != "" )    {
+        console.log("columnId")
         db.getOrderByColumnId(columnId, function(error, orders) {
             if(error)
                 res.status(500).json({ error })
@@ -22,7 +24,10 @@ router.get("/", function(req, res, next) {
                 res.status(200).json({ orders })
         })
     }   else    {
+        console.log("all")
+
         db.getAllOrders(function(error, orders) {
+            console.log("orders: ", orders)
             if(error)
                 res.status(500).json({ error })
             else
