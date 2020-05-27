@@ -62,7 +62,7 @@ db.run(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title VARCHAR(255) NOT NULL,
         message VARCHAR(1000) NOT NULL,
-        supervisor INTEGER NOT NULL,
+        supervisor INTEGER,
         type INTEGER NOT NULL,
         FOREIGN KEY (supervisor) REFERENCES admin(id)
     )
@@ -160,6 +160,14 @@ exports.updateOrder = function(id, title, company, date, status, columnId, callb
     const values = [title, company, date, status, columnId, id]
 
     db.run(query, values, function(error) {
+        callback(error)
+    })
+}
+exports.updateOderStatus = function(id, status, callback)   {
+    const query = "UPDATE 'order' SET status = ? WHERE id = ?"
+    const values = [status, id]
+
+    db.run(query, values, function(error)   {
         callback(error)
     })
 }

@@ -6,11 +6,12 @@ const db = require("../db/db")
 router.get("/", function(req, res, next) {
     const id = req.query.ids || null
     const columnId = req.query.columnId || null
+
     console.log("id: ", id)
     if(id != null && id != "")  {
         console.log("id")
         db.getOrderById(id, function(error, order)  {
-            if(error)  
+            if(error)
                 res.status(500).json({ error })
             else
                 res.status(200).json({ order })
@@ -49,6 +50,21 @@ router.post("/", function(req, res, next)   {
         else
             res.status(200).json({ message: "Created successfully!" })
     })
+})
+
+router.put("/status", function(req, res, next)  {
+    const id = req.body.id
+    const status = req.body.status
+
+    if(id != null)  {
+        db.updateOrderStatus(id, status, function(error)    {
+            if(error)
+                res.status(500).json({ error })
+            else
+                res.status(200).json({ message: "Updated successfully!" })
+        })
+    }   else
+        res.status(400).json({ message: "NO ID!" })
 })
 
 router.put("/", function(req, res, next)    {
