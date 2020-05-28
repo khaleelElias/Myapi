@@ -5,10 +5,11 @@ const db = require("../db/db")
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  const id = req.query.id
-
+  const id = req.query.id || null
+  console.log("get user with id: ", id)
   if(id != null)  {
     db.getAdminById(id, function(error, user) {
+      console.log("user: ", user, " error: ", error)
       if(error) 
         res.status(500).json({ error })
       else if (!user)

@@ -46,6 +46,27 @@ router.put("/", function(req, res, next)  {
     res.status(400).json({ message: "NO ID!"})
 })
 
+router.put("/changeSupervisor", function(req, res) {
+  const columnId = req.body.columnId || null
+  const userId = req.body.userId || null
+  console.log("called changeSupervisor with columnId: ", columnId, " and userId: ", userId)
+  if (!columnId || !userId) {
+    res.status(400).json({error: "bad request, columnId or userId is not defined!"})
+    return
+  }
+
+  db.updateColumnSupervisor(columnId, userId, function(error) {
+    console.log("error: ",error )
+
+    if (!error) 
+      res.status(200).json({})
+    else 
+      res.status(500).json({ error })
+    
+  })
+
+})
+
 router.delete("/", function(req, res, next) {
   const id = req.body.id
 

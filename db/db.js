@@ -112,6 +112,15 @@ exports.updateColumn = function(id, title, message, supervisor, type, callback) 
     })
 }
 
+exports.updateColumnSupervisor = function(columnId, userId, callback) {
+    const query = "UPDATE column SET supervisor = ? WHERE id = ?"
+    const VALUES = [userId, columnId]
+
+    db.run(query, VALUES, function(error) {
+        callback(error || null)
+    })
+}
+
 /*---------------------- Order ---------------------------*/
 db.run(`
 	CREATE TABLE IF NOT EXISTS 'order'    (
