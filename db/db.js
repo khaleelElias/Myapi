@@ -139,15 +139,15 @@ db.run(`
 
 exports.getAllOrders = function(callback) {
     const query = "SELECT * FROM 'order' ORDER BY id DESC"
-
+    
     db.all(query, function(error, orders) {
         callback(error, orders);
     })
 }
 
 exports.getAllOrdersFilteredByPriorty = function(callback) {
-    const query = "SELECT * FROM 'order' ORDER BY priority DESC"
-
+    const query = "SELECT * FROM 'order' ORDER BY priority DESC, CASE status WHEN 'bad' THEN 1 WHEN 'normal' THEN 2 WHEN 'good' THEN 3 END"
+    console.log("getAllOrdersFilteredByPriorty")
     db.all(query, function(error, orders) {
         callback(error, orders)
     })
