@@ -76,6 +76,7 @@ exports.getAllColumns = function(callback) {
         callback(error, columns)
     })
 }
+
 /* CreateColumn */
 exports.createColumn = function(title, message, supervisor, type, callback) {
     const query = "INSERT INTO column (title, message, supervisor, type) VALUES(?, ?, ?, ?)"
@@ -116,11 +117,13 @@ exports.updateColumn = function(id, title, message, supervisor, type, callback) 
 db.run(`
 	CREATE TABLE IF NOT EXISTS 'order'    (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
+        orderNumber INTEGER NOT NULL,
 		title TEXT NOT NULL,
         company TEXT NOT NULL,
         date DATE NOT NULL,
         status ENUM [bad, normal, good] NOT NULL,
-        columnId INTEGER NOT NULL,
+        columnId INTEGER,
+        priority INTEGER,
         FOREIGN KEY (columnId) REFERENCES column(id)
     )
 `)
@@ -132,9 +135,18 @@ exports.getAllOrders = function(callback) {
         callback(error, orders);
     })
 }
-exports.createOrder = function(title, company, date, status, columnId, callback) {
-    const query = "INSERT INTO 'order' (title, company, date, status, columnId) VALUES (?, ?, ?, ?, ?)"
-    const values = [title, company, date, status, columnId]
+
+exports.getAllOrdersFilteredByPriorty = function(callback) {
+    const query = "SELECT * FROM 'order' ORDER BY priority DESC"
+
+    db.all(query, function(error, orders) {
+        callback(error, orders)
+    })
+}
+
+exports.createOrder = function(orderNumber, title, company, date, status, priority, columnId, callback) {
+    const query = "INSERT INTO 'order' (orderNumber, title, company, date, status, priority, columnId) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    const values = [orderNumber, title, company, date, status, priority, columnId]
 
     db.run(query, values, function(error) {
         callback(error);
@@ -155,17 +167,25 @@ exports.getOrderByColumnId = function(columnId, callback)   {
         callback(error, orders)
     })
 }
-exports.updateOrder = function(id, title, company, date, status, columnId, callback) {
-    const query = `UPDATE 'order' SET title = ?, company = ?, date = ?, status = ?, columnId = ? WHERE id = ?`
-    const values = [title, company, date, status, columnId, id]
+exports.updateOrder = function(id, orderNumber, title, company, date, status, priority, columnId, callback) {
+    const query = `UPDATE 'order' SET orderNumber = ?, title = ?, company = ?, date = ?, status = ?, priority = ?, columnId = ? WHERE id = ?`
+    const values = [orderNumber, title, company, date, status, priority, columnId, id]
 
     db.run(query, values, function(error) {
         callback(error)
     })
 }
-exports.updateOderStatus = function(id, status, callback)   {
+exports.updateOrderStatus = function(id, status, callback)   {
     const query = "UPDATE 'order' SET status = ? WHERE id = ?"
     const values = [status, id]
+
+    db.run(query, values, function(error)   {
+        callback(error)
+    })
+}
+exports.updateOrderPriority = function(id, priority, callback)   {
+    const query = "UPDATE 'order' SET priority = ? WHERE id = ?"
+    const values = [priority, id]
 
     db.run(query, values, function(error)   {
         callback(error)

@@ -6,10 +6,9 @@ const db = require("../db/db")
 router.get("/", function(req, res, next) {
     const id = req.query.ids || null
     const columnId = req.query.columnId || null
+    const priority = req.query.priority || null
 
-    console.log("id: ", id)
     if(id != null && id != "")  {
-        console.log("id")
         db.getOrderById(id, function(error, order)  {
             if(error)
                 res.status(500).json({ error })
@@ -17,18 +16,21 @@ router.get("/", function(req, res, next) {
                 res.status(200).json({ order })
         })
     }   else if(columnId != null && columnId != "" )    {
-        console.log("columnId")
         db.getOrderByColumnId(columnId, function(error, orders) {
             if(error)
                 res.status(500).json({ error })
             else
                 res.status(200).json({ orders })
         })
+    }   else if(priority != null && priority != "")    {
+         db.getAllOrdersFilteredByPriorty( function( error, orders) {
+            if(error)
+                res.status(500).json({ error })
+            else
+                res.status(200).json({ orders })
+        })
     }   else    {
-        console.log("all")
-
         db.getAllOrders(function(error, orders) {
-            console.log("orders: ", orders)
             if(error)
                 res.status(500).json({ error })
             else
@@ -37,14 +39,17 @@ router.get("/", function(req, res, next) {
     }
 })
 
+
 router.post("/", function(req, res, next)   {
+    const orderNumber = req.body.orderNumber;
     const title = req.body.title;
     const company = req.body.company
     const date = req.body.date
     const status = req.body.status
+    const priority = req.body.priority
     const columnId = req.body.columnId
 
-    db.createOrder(title, company, date, status, columnId, function(error)  {
+    db.createOrder(orderNumber, title, company, date, status, priority, columnId, function(error)  {
         if(error)
             res.status(500).json({ error })
         else
@@ -52,31 +57,18 @@ router.post("/", function(req, res, next)   {
     })
 })
 
-router.put("/status", function(req, res, next)  {
-    const id = req.body.id
-    const status = req.body.status
-
-    if(id != null)  {
-        db.updateOrderStatus(id, status, function(error)    {
-            if(error)
-                res.status(500).json({ error })
-            else
-                res.status(200).json({ message: "Updated successfully!" })
-        })
-    }   else
-        res.status(400).json({ message: "NO ID!" })
-})
-
 router.put("/", function(req, res, next)    {
     const id = req.body.id
+    const orderNumber = req.body.orderNumber;
     const title = req.body.title;
     const company = req.body.company
     const date = req.body.date
     const status = req.body.status
+    const priority = req.body.priority
     const columnId = req.body.columnId
 
     if(id != null || id != "")  {
-        db.updateOrder(id, title, company, date, status, columnId, function(error)  {
+        db.updateOrder(id, orderNumber, title, company, date, status, priority, columnId, function(error)  {
             if(error)
                 res.status(500).json({ error })
             else
@@ -99,5 +91,36 @@ router.delete("/", function(req, res, next) {
     }   else
         res.status(400).json({ message: "NO ID!" })
 })
+
+router.put("/status/", function(req, res, next)  {
+    const id = req.body.id
+    const status = req.body.status
+
+    if(id != null)  {
+        db.updateOrderStatus(id, status, function(error)    {
+            if(error)
+                res.status(500).json({ error })
+            else
+                res.status(200).json({ message: "Updated successfully!" })
+        })
+    }   else
+        res.status(400).json({ message: "NO ID!" })
+})
+
+router.put('/priority', function(req, res, next)  {
+    const id = req.body.id
+    const priority = req.body.priority
+
+    if(id != null)  {
+        db.updateOrderPriority(id, priority, function(error)    {
+            if(error)
+                res.status(500).json({ error })
+            else
+                res.status(200).json({ message: "Updated successfully!" })
+        })
+    }   else
+        res.status(400).json({ message: "NO ID!" })
+})
+
 
 module.exports = router;
