@@ -24,6 +24,7 @@ router.get("/", function(req, res, next) {
         })
     }   else if(priority != null && priority != "")    {
          db.getAllOrdersFilteredByPriorty( function( error, orders) {
+             console.log("error: ", error, " orders: ", orders)
             if(error)
                 res.status(500).json({ error })
             else
@@ -123,8 +124,4 @@ router.put('/priority', function(req, res, next)  {
 })
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f1a7f38488f7395ca4438b4c898d1f5fe56705fd
 module.exports = router;
