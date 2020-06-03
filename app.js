@@ -8,13 +8,14 @@ const cors = require('cors');
 
 const db = require("./db/db")
 
-var indexRouter = require('./routes/index.js');
-var usersRouter = require('./routes/users.js');
-var columnsRouter = require('./routes/columns.js');
-var ordersRouter = require('./routes/orders.js');
-var checksRouter = require('./routes/checks.js');
+const indexRouter = require('./routes/index.js');
+const usersRouter = require('./routes/users.js');
+const columnsRouter = require('./routes/columns.js');
+const ordersRouter = require('./routes/orders.js');
+const checksRouter = require('./routes/checks.js');
+const projectsRouter = require('./routes/project.js');
 
-var app = express();
+const app = express();
 
 app.use(cors({origin: 'http://localhost:3001'}));
 
@@ -37,6 +38,7 @@ app.use('/users', usersRouter);
 app.use('/columns', columnsRouter);
 app.use('/orders', ordersRouter);
 app.use('/checks', checksRouter);
+app.use('/projects', projectsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
