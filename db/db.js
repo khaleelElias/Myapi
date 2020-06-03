@@ -161,7 +161,7 @@ exports.createOrder = function(orderNumber, title, company, date, status, priori
         callback(error);
     })
 }
-exports.getOrderById = function(id, callback) {
+exports.getProjectById = function(id, callback) {
     const query = "SELECT * FROM 'order' WHERE id = ?"
 
     db.get(query, [id], function(error, order) {
@@ -202,6 +202,84 @@ exports.updateOrderPriority = function(id, priority, callback)   {
 }
 exports.deleteOrder = function(id, callback) {
     const query = `DELETE FROM 'order' WHERE id = ?`
+
+    db.run(query, [id], function(error) {
+        callback(error);
+    })
+}
+
+/*--------------------- Project ---------------------------*/
+db.run(`
+	CREATE TABLE IF NOT EXISTS 'project'    (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+        projectNumber INTEGER NOT NULL,
+        company TEXT NOT NULL,
+        date DATE,
+        status ENUM [bad, normal, good],
+        priority INTEGER,
+        message TEXT
+    )
+`)
+
+exports.getAllProjects = function(callback) {
+    const query = "SELECT * FROM 'project' ORDER BY id DESC"
+    
+    db.all(query, function(error, projects) {
+        callback(error, projects);
+    })
+}
+
+exports.getAllProjectsFilteredByPriorty = function(callback) {
+    const query = "SELECT * FROM 'project' ORDER BY priority DESC, CASE status WHEN 'bad' THEN 1 WHEN 'normal' THEN 2 WHEN 'good' THEN 3 END"
+
+    db.all(query, function(error, projects) {
+        callback(error, projects)
+    })
+}
+
+exports.createProject = function(projectNumber, company, date, status, priority, message, callback) {
+    const query = "INSERT INTO 'project' (projectNumber, company, date, status, priority, message) VALUES (?, ?, ?, ?, ?, ?)"
+    const values = [projectNumber, company, date, status, priority, message]
+
+    db.run(query, values, function(error) {
+        callback(error);
+    })
+}
+exports.getProjectById = function(id, callback) {
+    const query = "SELECT * FROM 'project' WHERE id = ?"
+
+    db.get(query, [id], function(error, project) {
+        callback(error, project)
+    })
+}
+
+exports.updateProject = function(id, projectNumber, company, date, status, priority, message , callback) {
+    const query = `UPDATE 'project' SET projectNumber = ?, company = ?, date = ?, status = ?, priority = ?, message = ? WHERE id = ?`
+    const values = [projectNumber, company, date, status, priority, message, id]
+
+    db.run(query, values, function(error) {
+        callback(error)
+    })
+}
+
+exports.updateProjectStatus = function(id, status, callback)   {
+    const query = "UPDATE 'project' SET status = ? WHERE id = ?"
+    const values = [status, id]
+
+    db.run(query, values, function(error)   {
+        callback(error)
+    })
+}
+exports.updateProjectPriority = function(id, priority, callback)   {
+    const query = "UPDATE 'project' SET priority = ? WHERE id = ?"
+    const values = [priority, id]
+
+    db.run(query, values, function(error)   {
+        callback(error)
+    })
+}
+exports.deleteProject = function(id, callback) {
+    const query = `DELETE FROM 'project' WHERE id = ?`
 
     db.run(query, [id], function(error) {
         callback(error);

@@ -4,54 +4,46 @@ var router = express.Router();
 const db = require("../db/db")
 
 router.get("/", function(req, res, next) {
-    console.log("dwiadmwalmdölw")
     const id = req.query.ids || null
-    const columnId = req.query.columnId || null
     const priority = req.query.priority || null
 
     if(id != null && id != "")  {
-        db.getOrderById(id, function(error, order)  {
+        db.getProjectById(id, function(error, project)  {
             if(error)
                 res.status(500).json({ error })
             else
-                res.status(200).json({ order })
-        })
-    }   else if(columnId != null && columnId != "" )    {
-        db.getOrderByColumnId(columnId, function(error, orders) {
-            if(error)
-                res.status(500).json({ error })
-            else
-                res.status(200).json({ orders })
+                res.status(200).json({ project })
         })
     }   else if(priority != null && priority != "")    {
-         db.getAllOrdersFilteredByPriorty( function( error, orders) {
-             console.log("error: ", error, " orders: ", orders)
+         db.getAllProjectsFilteredByPriorty( function( error, projects) {
+             console.log("error: ", error, " projects: ", projects)
             if(error)
                 res.status(500).json({ error })
             else
-                res.status(200).json({ orders })
+                res.status(200).json({ projects })
         })
     }   else    {
-        db.getAllOrders(function(error, orders) {
+        db.getAllProjects(function(error, projects) {
             if(error)
                 res.status(500).json({ error })
             else
-                res.status(200).json({ orders })           
+                res.status(200).json({ projects })           
         })
     }
 })
 
 
 router.post("/", function(req, res, next)   {
-    const orderNumber = req.body.orderNumber;
-    const title = req.body.title;
+    const projectNumber = req.body.projectNumber;
     const company = req.body.company
     const date = req.body.date
     const status = req.body.status
     const priority = req.body.priority
-    const columnId = req.body.columnId
+    const message = req.body.message
 
-    db.createOrder(orderNumber, title, company, date, status, priority, columnId, function(error)  {
+    console.log("created project with values: ", projectNumber, company, date, status, message )
+
+    db.createProject(projectNumber, company, date, status, priority, message, function(error)  {
         if(error)
             res.status(500).json({ error })
         else
@@ -61,16 +53,14 @@ router.post("/", function(req, res, next)   {
 
 router.put("/", function(req, res, next)    {
     const id = req.body.id
-    const orderNumber = req.body.orderNumber;
-    const title = req.body.title;
+    const projectNumber = req.body.projectNumber;
     const company = req.body.company
     const date = req.body.date
     const status = req.body.status
     const priority = req.body.priority
-    const columnId = req.body.columnId
 
     if(id != null || id != "")  {
-        db.updateOrder(id, orderNumber, title, company, date, status, priority, columnId, function(error)  {
+        db.updateProject(id, projectNumber, company, date, status, priority, message, function(error)  {
             if(error)
                 res.status(500).json({ error })
             else
@@ -84,7 +74,7 @@ router.delete("/", function(req, res, next) {
     const id = req.body.id
 
     if(id != null && id != "")  {
-        db.deleteOrder(id, function(error)  {
+        db.deleteProject(id, function(error)  {
             if(error)
                 res.status(500).json({ error })
             else
@@ -99,7 +89,7 @@ router.put("/status/", function(req, res, next)  {
     const status = req.body.status
 
     if(id != null)  {
-        db.updateOrderStatus(id, status, function(error)    {
+        db.updateProjectStatus(id, status, function(error)    {
             if(error)
                 res.status(500).json({ error })
             else
@@ -114,7 +104,7 @@ router.put('/priority', function(req, res, next)  {
     const priority = req.body.priority
 
     if(id != null)  {
-        db.updateOrderPriority(id, priority, function(error)    {
+        db.updateProjectPriority(id, priority, function(error)    {
             if(error)
                 res.status(500).json({ error })
             else
