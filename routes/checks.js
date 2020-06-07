@@ -7,14 +7,14 @@ router.get("/", function(req, res, next)    {
     const columnId = req.query.columnId
     const id = req.query.id
 
-    if(id != null || id != "")  {
+    if(id != null && id != "")  {
         db.getCheckById(id, function(error, check)  {
             if(error)
                 res.status(500).json({ error })
             else
                 res.status(200).json({ check })
         })
-    }   else if(columnId != null || columnId != "") {
+    }   else if(columnId != null && columnId != "") {
         db.getChecksByColumnId(columnId, function(error, checks)    {
             if(error)
                 res.status(500).json({ error })
@@ -51,11 +51,27 @@ router.put("/", function(req, res, next)    {
     const columnId = req.body.columnId
 
     db.updateCheckById(id, title, status, columnId, function(error) {
+        console.log(error)
         if(error)
             res.status(500).json({ error })
         else
             res.status(200).json({ message: "Updated Successfully!" })
     })
+})
+
+router.put("/status", function(req, res, next)  {
+    const id = req.body.id
+    const status = req.body.status
+
+    if(id != null)  {
+        db.updateCheckStatus(id, status, function(error)    {
+            if(error)
+                res.status(500).json({ error })
+            else
+                res.status(200).json({ message: "Updated successfully!" })
+        })
+    }   else
+        res.status(400).json({ message: "NO ID!" })
 })
 
 router.delete("/", function(req, res, next) {
