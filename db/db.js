@@ -70,7 +70,7 @@ db.run(`
 
 /* GetAllColumns */
 exports.getAllColumns = function(callback) {
-    const query = "SELECT * FROM column ORDER BY id DESC"
+    const query = "SELECT * FROM column WHERE type = 2 ORDER BY id DESC"
 
     db.all(query, function(error, columns) {
         callback(error, columns)
@@ -221,6 +221,7 @@ db.run(`
     )
 `)
 
+
 exports.getAllProjects = function(callback) {
     const query = "SELECT * FROM 'project' ORDER BY id DESC"
     
@@ -334,6 +335,14 @@ exports.updateCheckById = function(id, title, status, columnId, callback) {
         callback(error);
     })
 }
+exports.updateCheckStatus = function(id, status, callback)   {
+    const query = "UPDATE 'check' SET status = ? WHERE id = ?"
+    const values = [status, id]
+
+    db.run(query, values, function(error)   {
+        callback(error)
+    })
+}
 exports.deleteCheck = function(id, callback) {
     const query = `DELETE FROM 'check' WHERE id = ?`
 
@@ -348,3 +357,7 @@ exports.deleteChecksByColumnId = function(columnId, callback) {
         callback(error);
     })
 }
+
+/*
+db.run( ``
+)*/
