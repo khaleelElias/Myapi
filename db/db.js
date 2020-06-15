@@ -60,7 +60,7 @@ exports.updateStatus = function(id, status, callback)   {
 db.run(`
     CREATE TABLE IF NOT EXISTS column   (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL UNIQUE,
         message VARCHAR(1000) NOT NULL,
         supervisor INTEGER,
         type INTEGER NOT NULL,
@@ -70,7 +70,7 @@ db.run(`
 
 /* GetAllColumns */
 exports.getAllColumns = function(callback) {
-    const query = "SELECT * FROM column WHERE type = 2 ORDER BY id DESC"
+    const query = "SELECT * FROM column ORDER BY id DESC"
 
     db.all(query, function(error, columns) {
         callback(error, columns)
@@ -292,7 +292,7 @@ db.run(`
     CREATE TABLE IF NOT EXISTS 'check'    (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title VARCHAR(200) NOT NULL,
-        status ENUM [bad, normal, good] NOT NULL,
+        status ENUM [bad, normal, good],
         columnId INTEGER NOT NULL,
         FOREIGN KEY (columnId) REFERENCES column(id)
     )
@@ -303,6 +303,7 @@ exports.createCheck = function(title, status, columnId, callback) {
     const values = [title, status, columnId]
 
     db.run(query, values, function(error) {
+        console.log(error)
         callback(error);
     })
 }
@@ -358,6 +359,14 @@ exports.deleteChecksByColumnId = function(columnId, callback) {
     })
 }
 
-/*
-db.run( ``
-)*/
+db.run(`INSERT INTO 'column'(title, message, supervisor, type) VALUES(?, ?, ?, ?)`, ['Projekt', "Innehåll", 0, 3], function(error)    {
+    if(error)
+        return console.log(error.message)
+    console.log("Inserted Projekt into database with id: ");
+}),
+db.run(`INSERT INTO 'column'(title, message, supervisor, type) VALUES(?, ?, ?, ?)`, ['Ordrar', "Innehåll", 0, 4], function(error)    {
+    if(error)
+        return console.log(error.message)
+    console.log("Inserted Ordrar into database with id: ");
+})
+//db.run(`INSERT INTO column(title, message, supervisor, type) VALUES("Orders", "innehåll", 0, 3)`)

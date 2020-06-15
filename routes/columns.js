@@ -64,7 +64,6 @@ router.put("/changeSupervisor", function(req, res) {
       res.status(500).json({ error })
     
   })
-
 })
 
 router.delete("/", function(req, res, next) {
