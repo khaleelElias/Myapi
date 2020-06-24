@@ -4,14 +4,24 @@ var router = express.Router();
 const db = require("../db/db")
 
 router.get('/', function(req, res, next)  {
+  const type = req.query.type
   
-  db.getAllColumns(function(error, columns) {
-    if(error) {
-      console.log(error)
-      res.status(500).json({ error })
-    } else
-      res.status(200).json({ columns })
-  })
+  if(type != null && type != "")  {
+    db.getAllColumnsByType(type, function(error, columns) {
+      if(error)
+        res.status(500).json({ error })
+      else
+        res.status(200).json({ columns })
+    })
+  } else  {
+    db.getAllColumns(function(error, columns) {
+      if(error) {
+        console.log(error)
+        res.status(500).json({ error })
+      } else
+        res.status(200).json({ columns })
+    })
+  }
 })
 
 router.post("/", function(req, res, next)  {

@@ -70,13 +70,20 @@ db.run(`
 
 /* GetAllColumns */
 exports.getAllColumns = function(callback) {
-    const query = "SELECT * FROM column WHERE type = 2 ORDER BY id DESC"
+    const query = "SELECT * FROM column WHERE ORDER BY id DESC"
 
     db.all(query, function(error, columns) {
         callback(error, columns)
     })
 }
+/* GetAllColumnsByType */
+exports.getAllColumnsByType = function(type, callback) {
+    const query = "SELECT * FROM column WHERE type = ? ORDER BY id DESC"
 
+    db.all(query, [type], function(error, columns) {
+        callback(error, columns)
+    })
+}
 /* CreateColumn */
 exports.createColumn = function(title, message, supervisor, type, callback) {
     const query = "INSERT INTO column (title, message, supervisor, type) VALUES(?, ?, ?, ?)"
