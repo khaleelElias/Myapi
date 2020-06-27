@@ -78,14 +78,14 @@ router.delete("/", function(req, res, next) {
     const id = req.body.id
     const columnId = req.body.columnId
 
-    if(id != null || id != "")  {
+    if(id != null && id != "")  {
         db.deleteCheck(id, function(error)  {
             if(error)  
                 res.status(500).json({ error })
             else
                 res.status(200).json({ message: "Deleted successfully!" })
         })
-    }   else if(columnId != null || columnId != "") {
+    }   else if(columnId != null && columnId != "") {
         db.deleteChecksByColumnId(columnId, function(error) {
             if(error)   
                 res.status(500).json({ error })
