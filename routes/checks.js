@@ -37,6 +37,7 @@ router.post("/", function(req, res, next)   {
     const columnId = req.body.columnId
 
     db.createCheck(title, status, columnId, function(error) {
+        console.log(error)
         if(error)
             res.status(500).json({ error })
         else
