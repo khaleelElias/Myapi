@@ -69,6 +69,8 @@ router.put("/", function(req, res, next)    {
     const priority = req.body.priority
     const columnId = req.body.columnId
 
+
+    console.log("date: ", date)
     if(id != null || id != "")  {
         db.updateOrder(id, orderNumber, title, company, date, status, priority, columnId, function(error)  {
             if(error)
